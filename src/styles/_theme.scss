@@ -1,0 +1,38 @@
+// =============================================================================
+// LAYER 1 — GLOBAL THEME
+// -----------------------------------------------------------------------------
+// The single source of truth for palette, typography and density.
+// Change a value here and every Material component in the app updates.
+//
+// Light/dark: mat.theme() emits colors with light-dark(), so switching
+// `color-scheme` on <html> flips the whole app. ThemeService toggles the
+// `.dark-theme` class; with no class we follow the OS setting.
+// =============================================================================
+
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light dark;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: (
+        plain-family: Roboto,
+        brand-family: Roboto,
+      ),
+      density: 0,
+    )
+  );
+
+  &.light-theme {
+    color-scheme: light;
+  }
+
+  &.dark-theme {
+    color-scheme: dark;
+  }
+}

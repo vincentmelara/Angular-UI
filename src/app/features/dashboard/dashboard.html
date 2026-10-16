@@ -1,0 +1,181 @@
+<header class="page-header">
+  <div>
+    <h1>Welcome back, {{ user()?.name?.split(' ')?.[0] }}</h1>
+    <p>Here's how training is tracking across your programs.</p>
+  </div>
+  <button mat-flat-button>
+    <mat-icon>add</mat-icon>
+    New course
+  </button>
+</header>
+
+<!-- KPI row -->
+<section class="stats" aria-label="Summary">
+  <app-stat-card label="Active courses" [value]="stats().activeCourses" icon="menu_book" />
+  <app-stat-card
+    label="Enrolled learners"
+    [value]="stats().learners | number"
+    icon="groups"
+    tone="tertiary"
+  />
+  <app-stat-card
+    label="Avg. completion"
+    [value]="stats().avgCompletion + '%'"
+    icon="trending_up"
+    tone="success"
+  />
+  <app-stat-card
+    label="Overdue"
+    [value]="stats().overdue"
+    icon="warning"
+    tone="danger"
+    hint="Needs follow-up"
+  />
+</section>
+
+<div class="grid">
+  <!-- Courses table -->
+  <mat-card appearance="outlined" class="courses">
+    <mat-card-header>
+      <mat-card-title>Courses</mat-card-title>
+      <mat-card-subtitle>{{ dataSource.filteredData.length }} shown</mat-card-subtitle>
+    </mat-card-header>
+
+    <div class="filters">
+      <mat-form-field appearance="outline" class="field-compact search" subscriptSizing="dynamic">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          placeholder="Search courses"
+          [value]="search()"
+          (input)="search.set($any($event.target).value)"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="field-compact" subscriptSizing="dynamic">
+        <mat-select [value]="category()" (valueChange)="category.set($event)" aria-label="Category">
+          @for (c of categories; track c) {
+            <mat-option [value]="c">{{ c }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="table-scroll">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Course</th>
+          <td mat-cell *matCellDef="let c">
+            <div class="course-title">
+              <strong>{{ c.title }}</strong>
+              <span>{{ c.id }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let c">{{ c.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="enrolled">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" class="num">
+            Enrolled
+          </th>
+          <td mat-cell *matCellDef="let c" class="num">{{ c.enrolled | number }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="completion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Completion</th>
+          <td mat-cell *matCellDef="let c">
+            <div class="completion">
+              <mat-progress-bar
+                mode="determinate"
+                [value]="c.completion"
+                [class]="ui(c).progress"
+              />
+              <span>{{ c.completion }}%</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Due</th>
+          <td mat-cell *matCellDef="let c">{{ c.dueDate | date: 'MMM d' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let c">
+            <mat-chip [class]="ui(c).chip" disableRipple>
+              {{ ui(c).label }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef><span class="visually-hidden">Actions</span></th>
+          <td mat-cell *matCellDef="let c" class="actions">
+            <button mat-icon-button [matMenuTriggerFor]="rowMenu" aria-label="Course actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #rowMenu="matMenu" xPosition="before">
+              <button mat-menu-item>
+                <mat-icon>visibility</mat-icon>
+                <span>View</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button mat-menu-item (click)="archive(c)">
+                <mat-icon>archive</mat-icon>
+                <span>Archive</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        <tr class="empty-row" *matNoDataRow>
+          <td [attr.colspan]="columns.length">No courses match your filters.</td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSize]="6" [pageSizeOptions]="[6, 12, 24]" aria-label="Select page" />
+  </mat-card>
+
+  <!-- Side column -->
+  <aside class="side">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Upcoming deadlines</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        @for (d of deadlines(); track d.id) {
+          <mat-list-item>
+            <mat-icon matListItemIcon>event</mat-icon>
+            <span matListItemTitle>{{ d.title }}</span>
+            <span matListItemLine>{{ d.course }} · {{ d.dueDate | date: 'EEE, MMM d' }}</span>
+          </mat-list-item>
+        }
+      </mat-list>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="card-tonal">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>tips_and_updates</mat-icon>
+        <mat-card-title>Compliance window closes soon</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Annual compliance training is due by Oct 31. Send a reminder to learners who haven't started.</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button>Dismiss</button>
+        <button mat-flat-button class="btn-tertiary">Send reminder</button>
+      </mat-card-actions>
+    </mat-card>
+  </aside>
+</div>

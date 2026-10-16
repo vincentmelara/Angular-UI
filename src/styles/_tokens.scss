@@ -1,0 +1,42 @@
+// =============================================================================
+// LAYER 0 — APP DESIGN TOKENS
+// -----------------------------------------------------------------------------
+// Values Material doesn't own: spacing scale, corner radii, layout widths and
+// semantic colors Material 3 has no role for (success, warning).
+//
+// Components reference these as var(--app-*) — never raw px or hex values.
+// light-dark() resolves against the active color-scheme, so these follow the
+// theme toggle automatically.
+// =============================================================================
+
+:root {
+  // Spacing scale (4px base)
+  --app-space-1: 4px;
+  --app-space-2: 8px;
+  --app-space-3: 12px;
+  --app-space-4: 16px;
+  --app-space-5: 24px;
+  --app-space-6: 32px;
+  --app-space-7: 48px;
+
+  // Corner radii
+  --app-radius-sm: 8px;
+  --app-radius-md: 12px;
+  --app-radius-lg: 16px;
+  --app-radius-full: 9999px;
+
+  // Layout
+  --app-content-max-width: 1280px;
+  --app-sidenav-width: 248px;
+
+  // Semantic colors Material 3 doesn't define
+  --app-success: light-dark(#1b6e3a, #8ad7a0);
+  --app-on-success: light-dark(#ffffff, #00391a);
+  --app-success-container: light-dark(#c6f0d0, #0f5229);
+  --app-on-success-container: light-dark(#002110, #c6f0d0);
+
+  --app-warning: light-dark(#7a5900, #f3c050);
+  --app-on-warning: light-dark(#ffffff, #402d00);
+  --app-warning-container: light-dark(#ffdf9e, #5c4200);
+  --app-on-warning-container: light-dark(#261a00, #ffdf9e);
+}

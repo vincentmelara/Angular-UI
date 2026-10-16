@@ -1,0 +1,92 @@
+// Layout only. Colors/shapes come from theme tokens — no raw values.
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100%;
+
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.brand-panel {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--app-space-4);
+  padding: var(--app-space-7);
+  background:
+    radial-gradient(circle at 20% 20%, var(--mat-sys-tertiary-container), transparent 60%),
+    var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  @media (min-width: 960px) {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0;
+    max-width: 18ch;
+    font: var(--mat-sys-display-small);
+  }
+
+  p {
+    margin: 0;
+    max-width: 40ch;
+    font: var(--mat-sys-body-large);
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-2);
+  margin-bottom: auto;
+  font: var(--mat-sys-title-large);
+}
+
+.form-panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(--app-space-5);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: var(--app-space-4);
+  right: var(--app-space-4);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+
+  mat-card-header {
+    padding: var(--app-space-5) var(--app-space-5) var(--app-space-2);
+  }
+
+  mat-card-content {
+    padding: var(--app-space-2) var(--app-space-5) var(--app-space-5);
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-1);
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--app-space-4);
+}

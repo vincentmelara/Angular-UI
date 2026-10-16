@@ -1,0 +1,99 @@
+// =============================================================================
+// LAYER 2 — COMPONENT TOKEN OVERRIDES
+// -----------------------------------------------------------------------------
+// The app's default look for each component *type*. Every <mat-form-field>,
+// every button, every card gets these — no class needed in templates.
+//
+// RULES
+//   • Use mat.<component>-overrides() only. Never target internal classes
+//     like .mdc-* or .mat-mdc-* — they change between Material versions.
+//   • Values come from Material system vars (--mat-sys-*) or app tokens
+//     (--app-*). No raw hex or px.
+//   • Token names: see each component's "Styling" tab at material.angular.dev
+// =============================================================================
+
+@use '@angular/material' as mat;
+
+:root {
+  // --- Form fields ---------------------------------------------------------
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: var(--app-radius-sm),
+      outlined-outline-color: var(--mat-sys-outline-variant),
+      outlined-hover-outline-color: var(--mat-sys-outline),
+    )
+  );
+
+  // --- Buttons -------------------------------------------------------------
+  @include mat.button-overrides(
+    (
+      filled-container-shape: var(--app-radius-sm),
+      outlined-container-shape: var(--app-radius-sm),
+      text-container-shape: var(--app-radius-sm),
+      protected-container-shape: var(--app-radius-sm),
+      tonal-container-shape: var(--app-radius-sm),
+      filled-container-height: 44px,
+      outlined-container-height: 44px,
+    )
+  );
+
+  // --- Cards ---------------------------------------------------------------
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: var(--app-radius-lg),
+      outlined-container-shape: var(--app-radius-lg),
+      outlined-container-color: var(--mat-sys-surface-container-lowest),
+      outlined-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+
+  // --- App chrome ----------------------------------------------------------
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container),
+      container-text-color: var(--mat-sys-on-surface),
+    )
+  );
+
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-background-color: var(--mat-sys-surface-container-low),
+      content-background-color: var(--mat-sys-surface),
+    )
+  );
+
+  @include mat.list-overrides(
+    (
+      active-indicator-shape: var(--app-radius-full),
+    )
+  );
+
+  // --- Data display --------------------------------------------------------
+  @include mat.table-overrides(
+    (
+      background-color: transparent,
+      header-headline-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-background-color: transparent,
+    )
+  );
+
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-height: 6px,
+      track-height: 6px,
+      track-shape: var(--app-radius-full),
+    )
+  );
+
+  @include mat.chips-overrides(
+    (
+      container-shape-radius: var(--app-radius-full),
+    )
+  );
+}

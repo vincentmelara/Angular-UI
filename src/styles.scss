@@ -1,0 +1,21 @@
+// =============================================================================
+// GLOBAL STYLES — ENTRY POINT
+// -----------------------------------------------------------------------------
+// RULE: Nothing gets written directly in this file. It only wires up the
+// style system, in this order:
+//
+//   0. tokens     — app-level design tokens (spacing, radius, semantic colors)
+//   1. theme      — LAYER 1: mat.theme() palette / typography / density
+//   2. overrides  — LAYER 2: per-component-type token overrides
+//   3. variants   — LAYER 3: opt-in variant classes for one-off exceptions
+//   4. base       — html/body reset only
+//
+// Component layout lives in each component's own .scss file.
+// See STYLE-GUIDE.md before adding anything here.
+// =============================================================================
+
+@use 'styles/tokens';
+@use 'styles/theme';
+@use 'styles/overrides';
+@use 'styles/variants';
+@use 'styles/base';

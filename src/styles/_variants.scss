@@ -1,0 +1,127 @@
+// =============================================================================
+// LAYER 3 — VARIANT CLASSES
+// -----------------------------------------------------------------------------
+// Opt-in, one-class exceptions to the Layer 2 defaults. A dev adds ONE class
+// in the template and gets a fully consistent variant — no CSS required:
+//
+//   <button mat-flat-button class="btn-danger">Delete</button>
+//   <mat-form-field class="field-compact">…</mat-form-field>
+//
+// RULES
+//   • Each variant re-applies override tokens; never internal selectors.
+//   • Naming: <component>-<intent>   (btn-danger, field-compact, chip-success)
+//   • Add a variant only when the need recurs. Document it in STYLE-GUIDE.md.
+// =============================================================================
+
+@use '@angular/material' as mat;
+
+// --- Buttons ----------------------------------------------------------------
+
+// Destructive actions: delete, archive, revoke.
+.btn-danger {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-error),
+      filled-label-text-color: var(--mat-sys-on-error),
+      outlined-label-text-color: var(--mat-sys-error),
+      outlined-outline-color: var(--mat-sys-error),
+      text-label-text-color: var(--mat-sys-error),
+      tonal-container-color: var(--mat-sys-error-container),
+      tonal-label-text-color: var(--mat-sys-on-error-container),
+    )
+  );
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--mat-sys-error),
+    )
+  );
+}
+
+// Confirming / positive actions: approve, mark complete.
+.btn-success {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--app-success),
+      filled-label-text-color: var(--app-on-success),
+      outlined-label-text-color: var(--app-success),
+      outlined-outline-color: var(--app-success),
+      text-label-text-color: var(--app-success),
+    )
+  );
+}
+
+// Secondary emphasis using the tertiary palette.
+.btn-tertiary {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-tertiary),
+      filled-label-text-color: var(--mat-sys-on-tertiary),
+      outlined-label-text-color: var(--mat-sys-tertiary),
+      text-label-text-color: var(--mat-sys-tertiary),
+    )
+  );
+}
+
+// Full-width button (e.g. form submit).
+.btn-block {
+  width: 100%;
+}
+
+// --- Form fields ------------------------------------------------------------
+
+// Dense field for toolbars, filters, table headers.
+.field-compact {
+  @include mat.theme((density: -4));
+}
+
+// Full-width field.
+.field-block {
+  width: 100%;
+}
+
+// --- Chips (status pills) ---------------------------------------------------
+
+@mixin _chip($bg, $fg) {
+  @include mat.chips-overrides(
+    (
+      outline-width: 0,
+      elevated-container-color: $bg,
+      label-text-color: $fg,
+      disabled-label-text-color: $fg,
+    )
+  );
+}
+
+.chip-success { @include _chip(var(--app-success-container), var(--app-on-success-container)); }
+.chip-warning { @include _chip(var(--app-warning-container), var(--app-on-warning-container)); }
+.chip-danger  { @include _chip(var(--mat-sys-error-container), var(--mat-sys-on-error-container)); }
+.chip-info    { @include _chip(var(--mat-sys-primary-container), var(--mat-sys-on-primary-container)); }
+.chip-neutral { @include _chip(var(--mat-sys-surface-container-highest), var(--mat-sys-on-surface-variant)); }
+
+// --- Progress bars ----------------------------------------------------------
+
+.progress-success {
+  @include mat.progress-bar-overrides((active-indicator-color: var(--app-success)));
+}
+
+.progress-warning {
+  @include mat.progress-bar-overrides((active-indicator-color: var(--app-warning)));
+}
+
+.progress-danger {
+  @include mat.progress-bar-overrides((active-indicator-color: var(--mat-sys-error)));
+}
+
+// --- Cards ------------------------------------------------------------------
+
+// Tinted card for callouts / highlighted content.
+.card-tonal {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--mat-sys-primary-container),
+      outlined-outline-color: transparent,
+      elevated-container-color: var(--mat-sys-primary-container),
+    )
+  );
+  color: var(--mat-sys-on-primary-container);
+}
